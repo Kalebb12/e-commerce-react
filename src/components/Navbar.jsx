@@ -1,9 +1,17 @@
 import { Button } from "@mui/material";
+import { Authenticated, Unauthenticated } from "convex/react";
 import { ShoppingCart } from "lucide-react";
 import { Link, useNavigate } from "react-router";
+import { useAuthActions } from "@convex-dev/auth/react";
 
 const Navbar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { signOut } = useAuthActions();
+
+  const handleSignOut = () => {
+    signOut();
+  };
+
   return (
     <div className="flex justify-between items-center py-3 px-5 shadow-md">
       <h1 className="font-bold text-2xl">
@@ -21,8 +29,16 @@ const Navbar = () => {
           </div>
         </Link>
 
-        <Button variant="outlined" onClick={()=> navigate('/signin')}>Sign in</Button>
-        <Button variant="contained">Sign up</Button>
+        <Unauthenticated>
+          <Button variant="outlined" onClick={() => navigate("/signin")}>
+            Sign in
+          </Button>
+        </Unauthenticated>
+        <Authenticated>
+          <Button variant="contained" onClick={() => handleSignOut()}>
+            Sign out
+          </Button>
+        </Authenticated>
       </div>
     </div>
   );

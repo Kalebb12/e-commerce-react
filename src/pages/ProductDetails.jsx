@@ -21,7 +21,7 @@ const ProductDetails = () => {
       setNum(num - 1);
     }
   };
-  
+
   const user = useQuery(api.getUserId.currentUser);
   const mutate = useMutation(api.cart.addToCart);
   
@@ -32,6 +32,8 @@ const ProductDetails = () => {
       productId: id,
       quantity: num,
     });
+
+    alert('product added to cart')
   };
 
   if (!product) {
