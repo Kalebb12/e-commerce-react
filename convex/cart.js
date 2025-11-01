@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 export const addToCart = mutation({
   args: { productId: v.id("products"), userId: v.id("users") ,quantity : v.number()},
@@ -12,6 +12,28 @@ export const addToCart = mutation({
   },
 });
 
-// export const removeFromCart = query({
+export const getUserCart = query({
+  // Arguments: userId to identify which user's cart to fetch
+  args: { userId: v.id("users") },
+  handler: async (ctx, args) => {
+    if (!args.userId) return []
+    // Fetch all cart items belonging to the user
+    const cartItems = await ctx.db
+      .query("cart")
+      .filter(q => q.eq(q.field("userId"), args.userId))
+      .collect();
 
-// })
+    // Optionally, fetch full product details for each cart item
+    const detailedCart = await Promise.all(
+      cartItems.map(async (item) => {
+        const product = await ctx.db.get(item.productId);
+        return {
+          ...item,
+          product,
+        };
+      })
+    );
+
+    return detailedCart;
+  },
+});

@@ -1,8 +1,9 @@
 import { Button } from "@mui/material";
-import { Authenticated, Unauthenticated } from "convex/react";
+import { Authenticated, Unauthenticated, useQuery } from "convex/react";
 import { ShoppingCart } from "lucide-react";
 import { Link, useNavigate } from "react-router";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { api } from "../../convex/_generated/api";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -12,6 +13,9 @@ const Navbar = () => {
     signOut();
   };
 
+  const user = useQuery(api.getUserId.currentUser)
+  const cart = useQuery(api.cart.getUserCart,{userId:user?._id})
+  
   return (
     <div className="flex justify-between items-center py-3 px-5 shadow-md">
       <h1 className="font-bold text-2xl">
@@ -25,7 +29,7 @@ const Navbar = () => {
           <span>Cart</span>
           <ShoppingCart />
           <div className="absolute bg-[tomato] text-sm w-4 h-4 rounded-full flex justify-center items-center text-white -top-1 -right-2">
-            0
+            {cart ? cart.length : 0}
           </div>
         </Link>
 
