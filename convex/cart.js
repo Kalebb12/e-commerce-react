@@ -14,7 +14,7 @@ export const addToCart = mutation({
 
 export const getUserCart = query({
   // Arguments: userId to identify which user's cart to fetch
-  args: { userId: v.id("users") },
+  args: { userId: v.optional(v.id("users")) },
   handler: async (ctx, args) => {
     if (!args.userId) return []
     // Fetch all cart items belonging to the user
