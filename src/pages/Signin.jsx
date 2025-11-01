@@ -7,24 +7,28 @@ export function SignIn() {
   return (
     <div className="h-screen flex items-center justify-center">
       <form
-        className="flex flex-col shadow-md w-42 gap-2 items-center"
+        className="flex flex-col w-42 gap-2 items-start"
         onSubmit={(event) => {
           event.preventDefault();
           const formData = new FormData(event.currentTarget);
-          void signIn("password", formData);
+          signIn("password", formData);
         }}
       >
+        <label htmlFor="email">Email</label>
         <input
           name="email"
           className="border p-2 rounded-md w-full"
           placeholder="Email"
           type="text"
+          id="email"
         />
+        <label htmlFor="pwd">Password</label>
         <input
           name="password"
           className="border p-2 rounded-md w-full"
           placeholder="Password"
           type="password"
+          id="pwd"
         />
         <input name="flow" type="hidden" value={step} />
         <button

@@ -1,8 +1,9 @@
 import { useParams } from "react-router";
 import { api } from "../../convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
 import { Rating } from "@mui/material";
+import { getAuthUserId } from "@convex-dev/auth/server";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -19,6 +20,18 @@ const ProductDetails = () => {
     if (num > 1) {
       setNum(num - 1);
     }
+  };
+  
+  const user = useQuery(api.getUserId.currentUser);
+  const mutate = useMutation(api.cart.addToCart);
+  
+  const handleAddtoCart = async () => {
+    if (!user) return alert("Please login");
+    mutate({
+      userId: user._id,
+      productId: id,
+      quantity: num,
+    });
   };
 
   if (!product) {
@@ -47,11 +60,7 @@ const ProductDetails = () => {
             </div>
           </div>
 
-          <Rating
-            name="rating"
-            readOnly
-            value={product.rating}
-          />
+          <Rating name="rating" readOnly value={product.rating} />
 
           <h1 className="text-2xl font-semibold">${product.price}</h1>
           <div className="border-red-500 border-1 w-fit p-3 bg-red-200 text-red-400">
@@ -78,7 +87,10 @@ const ProductDetails = () => {
                 </button>
               </div>
 
-              <button className="cursor-pointer border-1 border-black rounded-md px-4 py-2 hover:shadow-md active:scale-97">
+              <button
+                className="cursor-pointer border-1 border-black rounded-md px-4 py-2 hover:shadow-md active:scale-97"
+                onClick={() => handleAddtoCart()}
+              >
                 Add to cart
               </button>
             </div>
