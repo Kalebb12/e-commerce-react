@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import ProductDetails from "./pages/ProductDetails";
 import Navbar from "./components/Navbar";
 import NotFound from "./pages/NotFound";
+import { SignIn } from "./pages/Signin";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/signin" element={<SignIn />} />
         <Route path="*" element={<NotFound/>} />
       </Routes>
     </>

@@ -2,11 +2,11 @@ import { useParams } from "react-router";
 import { api } from "../../convex/_generated/api";
 import { useQuery } from "convex/react";
 import { useState } from "react";
+import { Rating } from "@mui/material";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const product = useQuery(api.product.get, { id });
-  console.log(product);
 
   const [num, setNum] = useState(1);
   const [random] = useState(Math.round(Math.random() * 10));
@@ -47,6 +47,12 @@ const ProductDetails = () => {
             </div>
           </div>
 
+          <Rating
+            name="rating"
+            readOnly
+            value={product.rating}
+          />
+
           <h1 className="text-2xl font-semibold">${product.price}</h1>
           <div className="border-red-500 border-1 w-fit p-3 bg-red-200 text-red-400">
             {random} people are viewing this right now
@@ -72,7 +78,7 @@ const ProductDetails = () => {
                 </button>
               </div>
 
-              <button className="cursor-pointer border-1 border-black rounded-md px-4 py-2">
+              <button className="cursor-pointer border-1 border-black rounded-md px-4 py-2 hover:shadow-md active:scale-97">
                 Add to cart
               </button>
             </div>

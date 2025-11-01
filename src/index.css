@@ -8,3 +8,7 @@
   --card-shadow: 0px 40px 90px 0px #0000000F;
 }
 
+
+a:hover {
+  color: tomato;
+}
